@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ThemeProvider } from "@/app/material-tailwind-theme-provider";
+import ReactQueryProvider from "@/app/react-query-provider";
+import RecoilRootWrapper from "@/app/recoilWrapper";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,11 +27,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="ko">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ReactQueryProvider>
+          <RecoilRootWrapper>
+            <ThemeProvider>{children}</ThemeProvider>
+          </RecoilRootWrapper>
+        </ReactQueryProvider>
       </body>
     </html>
   );
