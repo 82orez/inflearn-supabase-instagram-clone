@@ -5,6 +5,7 @@ export default function Home() {
   return (
     <div>
       <div>Home</div>
+      <div>Logged in Page</div>
     </div>
   );
 }

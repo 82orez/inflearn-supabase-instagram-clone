@@ -28,7 +28,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loggedIn = false;
+  const loggedIn = true;
 
   return (
     <html lang="ko">
