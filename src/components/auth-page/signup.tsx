@@ -9,7 +9,7 @@ export default function Signup({ setView }) {
   const [password, setPassword] = useState("");
 
   return (
-    <div className={"flex flex-col justify-center items-center gap-10 h-screen bg-blue-gray-50"}>
+    <div className={"flex flex-col justify-center items-center gap-10 h-screen bg-blue-gray-50 bg-gradient-to-br from-amber-100 to-light-blue-200"}>
       <div className="border-4 border-amber-600 w-full max-w-[480px] p-8 flex flex-col gap-3 bg-white">
         <Image src={"/inflearngram.png"} alt={""} width={520} height={121} />
 
