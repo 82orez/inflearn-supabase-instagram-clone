@@ -2,9 +2,9 @@ import Sidebar from "@/components/main-layout-page/sidebar";
 
 export default async function MainLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
+    <div className={"flex"}>
       <Sidebar />
-      <main>{children}</main>
+      {children}
     </div>
   );
 }

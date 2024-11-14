@@ -1,11 +1,14 @@
 import Image from "next/image";
-import Signup from "@/components/auth-page/signup";
+import Logout from "@/components/auth-page/logout";
 
 export default function Home() {
   return (
-    <div>
+    <main className="flex flex-col justify-center items-center w-full">
       <div>Home</div>
-      <div>Logged in Page</div>
-    </div>
+      <div>Welcome </div>
+      <div>Welcome </div>
+      <div>Welcome </div>
+      <Logout />
+    </main>
   );
 }
