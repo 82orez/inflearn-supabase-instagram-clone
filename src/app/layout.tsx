@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/app/material-tailwind-theme-provider";
 import ReactQueryProvider from "@/app/react-query-provider";
 import RecoilRootWrapper from "@/app/recoilWrapper";
+import MainLayout from "@/components/main-layout-page/main-layout";
+import AuthPage from "../components/auth-page";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,12 +28,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const loggedIn = false;
+
   return (
     <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ReactQueryProvider>
           <RecoilRootWrapper>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>{loggedIn ? <MainLayout>{children}</MainLayout> : <AuthPage />}</ThemeProvider>
           </RecoilRootWrapper>
         </ReactQueryProvider>
       </body>

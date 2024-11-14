@@ -31,3 +31,12 @@ model Movie {
   popularity   Float
   release_date String
 }
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  message    String
+  sender     String   @db.Uuid
+  receiver   String   @db.Uuid
+  is_deleted Boolean  @default(false)
+  created_at DateTime @default(now()) @db.Timestamptz()
+}
