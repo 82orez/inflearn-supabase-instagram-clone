@@ -39,7 +39,9 @@ export default function Signup({ setView }) {
       <div className="border-4 border-amber-600 w-full max-w-[480px] p-8 flex flex-col bg-white">
         <div className={"mb-4"}>이미 계정이 있으신가요?</div>
         {/*@ts-ignore*/}
-        <Button color={"deep-purple"}>로그인 하기</Button>
+        <Button color={"deep-purple"} onClick={() => setView("signin")}>
+          로그인 하기
+        </Button>
       </div>
     </div>
   );
