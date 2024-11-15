@@ -3,10 +3,27 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@material-tailwind/react";
+import { createClient } from "@/utils/supabase/client";
+import { useMutation } from "@tanstack/react-query";
 
 export default function Signup({ setView }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmationRequired, setConfirmationRequired] = useState(false);
+
+  const supabase = createClient();
+
+  const signUpMutation = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: "http://localhost:3000/signup/confirm",
+        },
+      });
+    },
+  });
 
   return (
     <div className={"flex flex-col justify-center items-center gap-10 h-screen bg-blue-gray-50 bg-gradient-to-br from-amber-100 to-light-blue-200"}>
@@ -31,7 +48,12 @@ export default function Signup({ setView }) {
         />
 
         {/*@ts-ignore*/}
-        <Button color={"cyan"} onClick={() => {}}>
+        <Button
+          color={"cyan"}
+          onClick={() => {
+            signUpMutation.mutate();
+          }}
+          loading={signUpMutation.isPending}>
           가입하기
         </Button>
       </div>
