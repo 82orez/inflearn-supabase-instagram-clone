@@ -7,6 +7,7 @@ import RecoilRootWrapper from "@/app/recoilWrapper";
 import MainLayout from "@/components/main-layout-page/main-layout";
 import AuthPage from "../components/auth-page";
 import { createClient } from "@/utils/supabase/server";
+import AuthProvider from "@/config/auth-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,11 +39,13 @@ export default async function RootLayout({
   return (
     <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ReactQueryProvider>
-          <RecoilRootWrapper>
-            <ThemeProvider>{session?.user ? <MainLayout>{children}</MainLayout> : <AuthPage />}</ThemeProvider>
-          </RecoilRootWrapper>
-        </ReactQueryProvider>
+        <AuthProvider accessToken={session?.access_token}>
+          <ReactQueryProvider>
+            <RecoilRootWrapper>
+              <ThemeProvider>{session?.user ? <MainLayout>{children}</MainLayout> : <AuthPage />}</ThemeProvider>
+            </RecoilRootWrapper>
+          </ReactQueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );
