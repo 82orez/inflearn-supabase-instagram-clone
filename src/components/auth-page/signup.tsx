@@ -15,6 +15,9 @@ export default function Signup({ setView }) {
 
   const signUpMutation = useMutation({
     mutationFn: async () => {
+      if (email) {
+        const { data, error } = await supabase.from("auth").select(email);
+      }
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -22,6 +25,11 @@ export default function Signup({ setView }) {
           emailRedirectTo: "http://localhost:3000/signup/confirm",
         },
       });
+      if (error) alert(error.message);
+      if (data) {
+        setConfirmationRequired(true);
+        console.log(data);
+      }
     },
   });
 
@@ -53,8 +61,9 @@ export default function Signup({ setView }) {
           onClick={() => {
             signUpMutation.mutate();
           }}
-          loading={signUpMutation.isPending}>
-          가입하기
+          loading={signUpMutation.isPending}
+          disabled={confirmationRequired}>
+          {confirmationRequired ? "메일함을 확인해 주세요." : "가입하기"}
         </Button>
       </div>
 
