@@ -4,11 +4,9 @@ import HomeIcon from "@mui/icons-material/Home";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import SendIcon from "@mui/icons-material/Send";
-import WifiFindIcon from "@mui/icons-material/WifiFind";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
-import Logout from "@/components/auth-page/logout";
 
 export default function Sidebar() {
   const supabase = createClient();
