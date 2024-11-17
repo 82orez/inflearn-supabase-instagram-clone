@@ -34,7 +34,6 @@ export default function Sidebar() {
         }}>
         <ExitToAppIcon className={"text-5xl bg-amber-300"} />
         <div>Log out</div>
-        <Logout />
       </div>
     </aside>
   );

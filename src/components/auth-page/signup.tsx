@@ -15,9 +15,6 @@ export default function Signup({ setView }) {
 
   const signUpMutation = useMutation({
     mutationFn: async () => {
-      if (email) {
-        const { data, error } = await supabase.from("auth").select(email);
-      }
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
