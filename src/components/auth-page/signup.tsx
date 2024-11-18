@@ -12,19 +12,27 @@ export default function Signup({ setView }) {
   const [confirmationRequired, setConfirmationRequired] = useState(false);
   const [otp, setOtp] = useState("");
 
+  const validateEmail = (email) => {
+    // 이메일 유효성 검사 정규식
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const supabase = createClient();
 
   const signUpMutation = useMutation({
     mutationFn: async () => {
+      if (!validateEmail(email)) {
+        alert("유효한 이메일 주소를 입력해주세요.");
+        return;
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          emailRedirectTo: "http://localhost:3000/signup/confirm",
-        },
       });
       if (error) alert(error.message);
-      if (data) {
+      if (data.user) {
         setConfirmationRequired(true);
         console.log(data);
       }
@@ -48,7 +56,13 @@ export default function Signup({ setView }) {
 
         <p className={"mt-4 mb-2"}>회원 가입하기</p>
         {confirmationRequired ? (
-          <input type="text" placeholder={"인증 번호"} value={otp} onChange={(e) => setOtp(e.target.value)} />
+          <input
+            type="text"
+            placeholder={"인증 번호"}
+            className={"border-2 p-2 rounded-lg placeholder-gray-600"}
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+          />
         ) : (
           <>
             <input
