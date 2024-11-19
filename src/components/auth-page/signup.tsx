@@ -31,7 +31,10 @@ export default function Signup({ setView }) {
         email,
         password,
       });
-      if (error) alert(error.message);
+      if (error) {
+        alert(error.message);
+        return;
+      }
       if (data.user) {
         setConfirmationRequired(true);
         console.log(data);
@@ -46,6 +49,11 @@ export default function Signup({ setView }) {
         email,
         token: otp,
       });
+      if (error) {
+        alert(error.message);
+        return;
+      }
+      console.log(data);
     },
   });
 

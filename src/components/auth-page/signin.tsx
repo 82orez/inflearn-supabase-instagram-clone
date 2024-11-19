@@ -17,7 +17,10 @@ export default function Signin({ setView }) {
         email,
         password,
       });
-      if (error) alert(error.message);
+      if (error) {
+        alert(error.message);
+        return;
+      }
       if (data) {
         console.log(data);
       }
@@ -33,7 +36,10 @@ export default function Signin({ setView }) {
           : "http://localhost:3000/api/auth/callback",
       },
     });
-    if (error) alert(error.message);
+    if (error) {
+      alert(error.message);
+      return;
+    }
     console.log(data);
   };
 
