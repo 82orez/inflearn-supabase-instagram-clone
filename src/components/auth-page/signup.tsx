@@ -27,6 +27,21 @@ export default function Signup({ setView }) {
         return;
       }
 
+      // 이메일 중복 확인
+      const { data: existingUsers, error: userCheckError } = await supabase.from("userinfo").select("id").eq("email", email);
+
+      if (userCheckError) {
+        console.error("Error checking email:", userCheckError);
+        alert("이메일 확인 중 오류가 발생했습니다.");
+        return;
+      }
+
+      if (existingUsers && existingUsers.length > 0) {
+        console.log(existingUsers);
+        alert("이미 등록된 이메일 주소입니다. 로그인 페이지로 이동해주세요.");
+        return;
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
