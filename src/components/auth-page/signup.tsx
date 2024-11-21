@@ -28,7 +28,11 @@ export default function Signup({ setView }) {
       }
 
       // 이메일 중복 확인
-      const { data: existingUsers, error: userCheckError } = await supabase.from("userinfo").select("id").eq("email", email);
+      const { data: existingUsers, error: userCheckError } = await supabase
+        .from("userinfo")
+        .select("id")
+        .eq("email", email)
+        .not("email_confirmed_at", "is", null);
 
       if (userCheckError) {
         console.error("Error checking email:", userCheckError);
@@ -36,8 +40,8 @@ export default function Signup({ setView }) {
         return;
       }
 
+      // 배열 안에 객체들이 요소로 있는 형태로 응답이 오므로, 배열이 존재하고 빈 배열이 아니라면 existingUsers 가 존재한다고 봄.
       if (existingUsers && existingUsers.length > 0) {
-        console.log(existingUsers);
         alert("이미 등록된 이메일 주소입니다. 로그인 페이지로 이동해주세요.");
         return;
       }
@@ -45,6 +49,13 @@ export default function Signup({ setView }) {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            user_name: "TG Lee",
+            avatar_url: "",
+            admin: false,
+          },
+        },
       });
       if (error) {
         alert(error.message);
@@ -52,7 +63,7 @@ export default function Signup({ setView }) {
       }
       if (data.user) {
         setConfirmationRequired(true);
-        console.log(data);
+        console.log("sign up success");
       }
     },
   });
@@ -68,7 +79,7 @@ export default function Signup({ setView }) {
         alert(error.message);
         return;
       }
-      console.log(data);
+      console.log("verifyOtp success");
     },
   });
 

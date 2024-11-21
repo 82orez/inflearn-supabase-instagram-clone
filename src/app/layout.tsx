@@ -36,6 +36,8 @@ export default async function RootLayout({
     data: { session },
   } = await supabase.auth.getSession();
 
+  console.log("session: ", session);
+
   return (
     <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>

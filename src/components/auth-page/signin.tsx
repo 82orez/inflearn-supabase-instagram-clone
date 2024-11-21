@@ -13,6 +13,22 @@ export default function Signin({ setView }) {
 
   const signInMutation = useMutation({
     mutationFn: async () => {
+      // 이 메일 가입 완료 여부 확인
+      const { data: confirmedEmail, error: confirmedError } = await supabase
+        .from("userinfo")
+        .select("id")
+        .eq("email", email)
+        .not("email_confirmed_at", "is", null);
+
+      if (confirmedError) {
+        console.error("Error checking email:", confirmedError);
+        alert("이메일 확인 중 오류가 발생했습니다.");
+        return;
+      }
+      if (confirmedEmail?.length == 0) {
+        alert("아직 가입되지 않은 이메일입니다.");
+        return;
+      }
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -22,7 +38,7 @@ export default function Signin({ setView }) {
         return;
       }
       if (data) {
-        console.log(data);
+        console.log("sign in success");
       }
     },
   });
@@ -40,7 +56,7 @@ export default function Signin({ setView }) {
       alert(error.message);
       return;
     }
-    console.log(data);
+    console.log("Kakao sign in success");
   };
 
   return (
