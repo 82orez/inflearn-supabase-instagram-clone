@@ -13,17 +13,17 @@ import Logout from "@/components/auth-page/logout";
 export default async function Sidebar() {
   const supabase = await createClient();
   return (
-    <aside className={"border-4 h-screen w-1/3 max-w-[240px] min-w-[120px] p-6 flex flex-col justify-center items-center"}>
-      <Link href="/goodjob">
+    <aside className={"border-4 h-screen w-1/3 max-w-[180px] min-w-[120px] p-6 flex flex-col justify-center items-center"}>
+      <Link href="/">
         <HomeIcon className={"text-5xl"} />
       </Link>
-      <Link href={"/"}>
+      <Link href={"/people"}>
         <PeopleAltIcon className={"text-5xl"} />
       </Link>
-      <Link href={"/"}>
+      <Link href={"/search"}>
         <SearchIcon className={"text-5xl"} />
       </Link>
-      <Link href={"/"} className={"flex flex-col justify-center items-center"}>
+      <Link href={"/chat"} className={"flex flex-col justify-center items-center"}>
         <SendIcon className={"text-5xl text-blue-800"} />
         <div>메세지 보내기</div>
       </Link>

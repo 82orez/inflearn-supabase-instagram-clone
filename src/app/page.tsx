@@ -10,6 +10,7 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
   console.log("Logged in User information: ", user);
+
   return (
     <main className="flex flex-col justify-center items-center w-full">
       <div>Home</div>
