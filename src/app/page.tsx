@@ -12,7 +12,7 @@ export default async function Home() {
   console.log("Logged in User information: ", user);
 
   return (
-    <main className="flex flex-col justify-center items-center w-full">
+    <main className="flex flex-col justify-center items-center w-full bg-deep-purple-100">
       <div>Home</div>
       <div>Welcome {user?.user_metadata.user_name} 님!</div>
       <img src={user?.user_metadata.avatar_url} alt={user?.user_metadata.user_name} className={"rounded-full"} />

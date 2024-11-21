@@ -43,6 +43,7 @@ export default function Signup({ setView }) {
       // 배열 안에 객체들이 요소로 있는 형태로 응답이 오므로, 배열이 존재하고 빈 배열이 아니라면 existingUsers 가 존재한다고 봄.
       if (existingUsers && existingUsers.length > 0) {
         alert("이미 등록된 이메일 주소입니다. 로그인 페이지로 이동해주세요.");
+        setView("signin");
         return;
       }
 
