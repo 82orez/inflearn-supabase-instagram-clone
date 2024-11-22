@@ -2,9 +2,11 @@
 
 import Person from "@/components/chat/person";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { selectedIndexState } from "@/app/atoms/selectedIndexState";
 
 export default function ChatPeopleList() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useRecoilState(selectedIndexState);
 
   return (
     <div className={"h-screen bg-gray-100"}>

@@ -3,12 +3,24 @@
 import Person from "@/components/chat/person";
 import { Button } from "@material-tailwind/react";
 import Message from "@/components/chat/message";
+import { useRecoilValue } from "recoil";
+import { selectedIndexState } from "@/app/atoms/selectedIndexState";
 
 export default function ChatScreen() {
+  const selectedIndex = useRecoilValue(selectedIndexState);
+
   return (
     <div className={"h-screen w-full flex flex-col"}>
       {/*@ts-ignore*/}
-      <Person index={0} userId={"a"} name={"TG"} onlineAt={new Date().toISOString()} isActive={false} onChatScreen={true} onClick={null} />
+      <Person
+        index={selectedIndex}
+        userId={"a"}
+        name={"TG"}
+        onlineAt={new Date().toISOString()}
+        isActive={false}
+        onChatScreen={true}
+        onClick={null}
+      />
 
       <div className={"grow flex flex-col p-4 gap-5"}>
         <Message isFromMe={true} message={"Hello world"} />
