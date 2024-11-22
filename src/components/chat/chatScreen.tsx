@@ -7,6 +7,7 @@ import Message from "@/components/chat/message";
 export default function ChatScreen() {
   return (
     <div className={"h-screen w-full flex flex-col"}>
+      {/*@ts-ignore*/}
       <Person index={0} userId={"a"} name={"TG"} onlineAt={new Date().toISOString()} isActive={false} onChatScreen={true} onClick={null} />
 
       <div className={"grow flex flex-col p-4 gap-5"}>

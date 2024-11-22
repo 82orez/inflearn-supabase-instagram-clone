@@ -20,6 +20,7 @@ interface Person {
 export default function Person({ index, userId, name, onlineAt, isActive, onChatScreen, onClick }: Person) {
   return (
     <div
+      // @ts-ignore
       className={`p-4 min-w-60 flex items-center gap-3 ${onClick && "cursor-pointer"} ${
         !onChatScreen && isActive && "bg-light-blue-50"
       } ${!onChatScreen && !isActive && "bg-gray-300"} ${onChatScreen && "bg-gray-300"}`}
