@@ -13,7 +13,7 @@ interface Person {
   onlineAt: string;
   isActive: boolean;
   onChatScreen: boolean;
-  onClick: (() => void) | null;
+  // onClick: (() => void) | null;
 }
 
 TimeAgo.addDefaultLocale(ko);
@@ -23,9 +23,7 @@ export default function Person(person: Person) {
   const [selectedIndex, setSelectedIndex] = useRecoilState(selectedIndexState);
   return (
     <div
-      // ! ${person.onClick && "cursor-pointer"} 이 부분 재검토 필요.
-      // @ts-ignore
-      className={`p-4 min-w-60 flex items-center gap-3 ${person.onClick && "cursor-pointer"} ${
+      className={`p-4 min-w-60 flex items-center gap-3 hover:cursor-pointer ${
         !person.onChatScreen && person.isActive && "bg-light-blue-50"
       } ${!person.onChatScreen && !person.isActive && "bg-gray-300"} ${person.onChatScreen && "bg-gray-300"}`}
       onClick={() => setSelectedIndex(0)}>

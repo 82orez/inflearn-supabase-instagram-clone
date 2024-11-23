@@ -19,7 +19,7 @@ export default function ChatScreen() {
         onlineAt={new Date().toISOString()}
         isActive={false}
         onChatScreen={true}
-        onClick={null}
+        // onClick={null}
       />
 
       <div className={"grow flex flex-col p-4 gap-5"}>
