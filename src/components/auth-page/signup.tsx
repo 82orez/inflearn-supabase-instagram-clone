@@ -53,7 +53,7 @@ export default function Signup({ setView }) {
         options: {
           data: {
             user_name: "TG Lee",
-            avatar_url: "",
+            avatar_url: "https://randomuser.me/api/portraits/med/men/0.jpg",
             admin: false,
           },
         },

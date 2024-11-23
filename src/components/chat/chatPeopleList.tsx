@@ -2,11 +2,11 @@
 
 import Person from "@/components/chat/person";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { selectedIndexState } from "@/app/atoms/selectedIndexState";
 
 export default function ChatPeopleList() {
-  const [selectedIndex, setSelectedIndex] = useRecoilState(selectedIndexState);
+  const selectedIndex = useRecoilValue(selectedIndexState);
 
   return (
     <div className={"h-screen bg-gray-100"}>
@@ -17,7 +17,7 @@ export default function ChatPeopleList() {
         onlineAt={new Date().toISOString()}
         isActive={selectedIndex === 0}
         onChatScreen={false}
-        onClick={() => setSelectedIndex(0)}
+        // onClick={() => setSelectedIndex(0)}
       />
       <Person
         index={1}
@@ -26,7 +26,7 @@ export default function ChatPeopleList() {
         onlineAt={new Date().toISOString()}
         isActive={selectedIndex === 1}
         onChatScreen={false}
-        onClick={() => setSelectedIndex(1)}
+        // onClick={() => setSelectedIndex(1)}
       />
     </div>
   );
