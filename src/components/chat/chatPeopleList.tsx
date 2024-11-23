@@ -65,15 +65,6 @@ export default function ChatPeopleList() {
   return (
     <div className={"h-screen bg-gray-100"}>
       <Person
-        index={0}
-        userId={"a"}
-        name={"TG"}
-        onlineAt={new Date().toISOString()}
-        isActive={selectedIndex === 0}
-        onChatScreen={false}
-        // onClick={() => setSelectedIndex(0)}
-      />
-      <Person
         index={1}
         userId={"a"}
         name={"TG"}
