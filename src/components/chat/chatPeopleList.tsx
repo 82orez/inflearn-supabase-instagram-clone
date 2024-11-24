@@ -47,7 +47,7 @@ export default function ChatPeopleList({ loggedInUserId: loggedInUserId }) {
   }
 
   return (
-    <div className={"h-screen bg-gray-100"}>
+    <div className={"h-screen bg-gray-100 min-w-[200px]"}>
       {data?.map((people) => (
         <div
           key={people.id}

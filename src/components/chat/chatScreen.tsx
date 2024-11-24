@@ -41,7 +41,7 @@ export default function ChatScreen() {
   return activeDiv !== null ? (
     <div className={"h-screen w-full flex flex-col"}>
       {data?.map((chat) => (
-        <div key={chat.id} className={"flex bg-amber-100"}>
+        <div key={chat.id} className={"flex bg-amber-100 p-2"}>
           <img src={chat.user_metadata.avatar_url} alt="" className={"p-2 rounded-full w-20 h-20"} />
           <div className={"flex flex-col justify-center"}>
             <div>{chat.user_metadata.user_name}</div>
