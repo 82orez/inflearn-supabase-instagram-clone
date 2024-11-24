@@ -15,3 +15,11 @@ export const getTodo = async () => {
   handleError(error);
   return data;
 };
+
+export const getAllUsers = async () => {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.admin.listUsers();
+  handleError(error);
+  return data.users;
+};

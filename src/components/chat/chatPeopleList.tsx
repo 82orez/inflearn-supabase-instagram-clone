@@ -12,7 +12,7 @@ import ko from "javascript-time-ago/locale/ko";
 TimeAgo.addDefaultLocale(ko);
 const timeAgo = new TimeAgo("ko-KR");
 
-export default function ChatPeopleList() {
+export default function ChatPeopleList({ loggedInUserId: loggedInUserId }) {
   const [activeDiv, setActiveDiv] = useRecoilState(activeDivState);
   const handleClick = (index: string) => {
     setActiveDiv(index);
@@ -31,7 +31,7 @@ export default function ChatPeopleList() {
     // },
     queryFn: async () => {
       const supabase = createClient();
-      const { data, error } = await supabase.from("userinfo").select("*");
+      const { data, error } = await supabase.from("userinfo").select("*").neq("id", loggedInUserId);
       if (error) {
         console.error("Error checking user info:", error);
       }
@@ -52,7 +52,7 @@ export default function ChatPeopleList() {
         <div
           key={people.id}
           onClick={() => handleClick(people.id)}
-          className={`cursor-pointer p-2 flex ${activeDiv === people.id ? "bg-light-blue-100" : "bg-gray-400"}`}>
+          className={`cursor-pointer p-2 flex ${activeDiv === people.id ? "bg-light-blue-100" : "bg-gray-300"}`}>
           <img src={people.user_metadata.avatar_url} alt="" className={"p-2 rounded-full w-20 h-20"} />
           <div className={"flex flex-col justify-center"}>
             <div>{people.user_metadata.user_name}</div>
