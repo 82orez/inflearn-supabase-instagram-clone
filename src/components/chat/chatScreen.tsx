@@ -1,17 +1,18 @@
 "use client";
 
-import Person from "@/components/chat/person";
 import { Button } from "@material-tailwind/react";
 import Message from "@/components/chat/message";
 import { useRecoilValue } from "recoil";
-import { selectedIndexState } from "@/app/atoms/selectedIndexState";
 import { activeDivState } from "@/app/atoms/activeDivState";
 import { createClient } from "@/utils/supabase/client";
-import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import TimeAgo from "javascript-time-ago";
+import ko from "javascript-time-ago/locale/ko";
+
+TimeAgo.addDefaultLocale(ko);
+const timeAgo = new TimeAgo("ko-KR");
 
 export default function ChatScreen() {
-  const selectedIndex = useRecoilValue(selectedIndexState);
   const activeDiv = useRecoilValue(activeDivState);
 
   const { data, error } = useQuery({
@@ -31,19 +32,23 @@ export default function ChatScreen() {
     },
     enabled: !!activeDiv, // activeDiv 가 있을 때만 쿼리 실행
   });
+
+  if (error) {
+    console.log(error.message);
+    return <p>Error loading Lists</p>;
+  }
+
   return (
     <div className={"h-screen w-full flex flex-col"}>
-      {data?.map((chat) => <div key={chat.id}>{chat.user_metadata.user_name}</div>)}
-      {/*@ts-ignore*/}
-      <Person
-        index={selectedIndex}
-        userId={"a"}
-        name={"TG"}
-        onlineAt={new Date().toISOString()}
-        isActive={false}
-        onChatScreen={true}
-        // onClick={null}
-      />
+      {data?.map((chat) => (
+        <div key={chat.id} className={"flex bg-amber-100"}>
+          <img src={chat.user_metadata.avatar_url} alt="" className={"p-2 rounded-full w-20 h-20"} />
+          <div className={"flex flex-col justify-center"}>
+            <div>{chat.user_metadata.user_name}</div>
+            <div>{timeAgo.format(Date.parse(new Date().toISOString()))}</div>
+          </div>
+        </div>
+      ))}
 
       <div className={"grow flex flex-col p-4 gap-5"}>
         <Message isFromMe={true} message={"Hello world"} />
