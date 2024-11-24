@@ -38,7 +38,7 @@ export default function ChatScreen() {
     return <p>Error loading Lists</p>;
   }
 
-  return (
+  return activeDiv !== null ? (
     <div className={"h-screen w-full flex flex-col"}>
       {data?.map((chat) => (
         <div key={chat.id} className={"flex bg-amber-100"}>
@@ -65,5 +65,7 @@ export default function ChatScreen() {
         </Button>
       </div>
     </div>
+  ) : (
+    <div className={"w-full"}></div>
   );
 }
