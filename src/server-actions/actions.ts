@@ -22,7 +22,7 @@ export const sendMessage = async ({ message, chatUserId }) => {
   const supabase = await createClient();
 
   const {
-    data: { user },
+    data: { user }, // 반환되는 user 데이터는 객체 형태.
   } = await supabase.auth.getUser();
 
   const { data, error } = await supabase.from("Message").insert({
@@ -34,7 +34,7 @@ export const sendMessage = async ({ message, chatUserId }) => {
   return data;
 };
 
-export const getAllMessages = async (chatUserId) => {
+export const getAllMessages = async ({ chatUserId }) => {
   const supabase = await createClient();
   const {
     data: { user },

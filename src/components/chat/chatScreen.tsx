@@ -8,8 +8,9 @@ import { createClient } from "@/utils/supabase/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import TimeAgo from "javascript-time-ago";
 import ko from "javascript-time-ago/locale/ko";
-import { sendMessage } from "@/server-actions/actions";
-import { useState } from "react";
+import { getAllMessages, sendMessage } from "@/server-actions/actions";
+import { useEffect, useState } from "react";
+import { queryClient } from "@/app/react-query-provider";
 
 TimeAgo.addDefaultLocale(ko);
 const timeAgo = new TimeAgo("ko-KR");
@@ -17,6 +18,12 @@ const timeAgo = new TimeAgo("ko-KR");
 export default function ChatScreen() {
   const activeDiv = useRecoilValue(activeDivState);
   const [message, setMessage] = useState("");
+
+  const supabase = createClient();
+
+  // useEffect(() => {
+  //   const channel = supabase.channel("messages_gram").on();
+  // }, []);
 
   const { data, error } = useQuery({
     queryKey: ["onChatScreen", activeDiv],
@@ -30,7 +37,7 @@ export default function ChatScreen() {
       if (error) {
         console.error("Error checking user info:", error);
       }
-      console.log(data);
+      // console.log(data);
       return data;
     },
     enabled: !!activeDiv, // activeDiv 가 있을 때만 쿼리 실행
@@ -41,9 +48,25 @@ export default function ChatScreen() {
     return <p>Error loading Lists</p>;
   }
 
+  const { data: allMessage, error: allMessageError } = useQuery({
+    queryKey: ["messages", activeDiv],
+    queryFn: () => {
+      return getAllMessages({ chatUserId: activeDiv });
+    },
+    enabled: !!activeDiv, // activeDiv 가 있을 때만 쿼리 실행
+  });
+
+  if (allMessageError) {
+    console.log(allMessageError.message);
+    return <p>Error loading Message Lists</p>;
+  }
+
   const sendMessageMutation = useMutation({
     mutationFn: sendMessage,
-    onSuccess: () => setMessage(""),
+    onSuccess: () => {
+      setMessage("");
+      queryClient.invalidateQueries({ queryKey: ["messages"] });
+    },
     onError: (error) => console.error(error),
   });
 
@@ -60,8 +83,7 @@ export default function ChatScreen() {
       ))}
 
       <div className={"grow flex flex-col p-4 gap-5 overflow-y-scroll"}>
-        <Message isFromMe={true} message={"Hello world"} />
-        <Message isFromMe={false} message={"Hi~"} />
+        {allMessage?.map((message) => <Message key={message.id} message={message.message} isFromMe={message.receiver === activeDiv} />)}
       </div>
 
       <div className={"flex gap-3"}>
@@ -78,7 +100,8 @@ export default function ChatScreen() {
           className={"min-w-[180px]"}
           onClick={() => {
             if (message !== "") sendMessageMutation.mutate({ message: message, chatUserId: activeDiv });
-          }}>
+          }}
+          loading={sendMessageMutation.isPending}>
           전송하기
         </Button>
       </div>
