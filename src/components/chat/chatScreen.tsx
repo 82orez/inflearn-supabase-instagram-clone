@@ -50,10 +50,31 @@ export default function ChatScreen() {
         </div>
       ))}
 
-      <div className={"grow flex flex-col p-4 gap-5"}>
+      <div className={"grow flex flex-col p-4 gap-5 overflow-y-scroll"}>
         <Message isFromMe={true} message={"Hello world"} />
         <Message isFromMe={false} message={"Hi~"} />
         <Message isFromMe={true} message={"Hello world"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
+        <Message isFromMe={false} message={"Hi~"} />
         <Message isFromMe={false} message={"Hi~"} />
       </div>
 

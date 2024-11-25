@@ -125,19 +125,25 @@ export type Database = {
       }
       userinfo: {
         Row: {
-          email: string | null
+          app_metadata: Json | null
+          email: string
+          email_confirmed_at: string | null
           id: string
-          provider: Json | null
+          user_metadata: Json | null
         }
         Insert: {
-          email?: string | null
+          app_metadata?: Json | null
+          email: string
+          email_confirmed_at?: string | null
           id: string
-          provider?: Json | null
+          user_metadata?: Json | null
         }
         Update: {
-          email?: string | null
+          app_metadata?: Json | null
+          email?: string
+          email_confirmed_at?: string | null
           id?: string
-          provider?: Json | null
+          user_metadata?: Json | null
         }
         Relationships: []
       }
