@@ -76,7 +76,9 @@ export default function ChatScreen() {
         <Button
           color={"blue-gray"}
           className={"min-w-[180px]"}
-          onClick={() => sendMessageMutation.mutate({ message: message, chatUserId: activeDiv })}>
+          onClick={() => {
+            if (message !== "") sendMessageMutation.mutate({ message: message, chatUserId: activeDiv });
+          }}>
           전송하기
         </Button>
       </div>
