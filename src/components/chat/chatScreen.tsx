@@ -5,15 +5,18 @@ import Message from "@/components/chat/message";
 import { useRecoilValue } from "recoil";
 import { activeDivState } from "@/app/atoms/activeDivState";
 import { createClient } from "@/utils/supabase/client";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import TimeAgo from "javascript-time-ago";
 import ko from "javascript-time-ago/locale/ko";
+import { sendMessage } from "@/server-actions/actions";
+import { useState } from "react";
 
 TimeAgo.addDefaultLocale(ko);
 const timeAgo = new TimeAgo("ko-KR");
 
 export default function ChatScreen() {
   const activeDiv = useRecoilValue(activeDivState);
+  const [message, setMessage] = useState("");
 
   const { data, error } = useQuery({
     queryKey: ["onChatScreen", activeDiv],
@@ -38,6 +41,12 @@ export default function ChatScreen() {
     return <p>Error loading Lists</p>;
   }
 
+  const sendMessageMutation = useMutation({
+    mutationFn: sendMessage,
+    onSuccess: () => setMessage(""),
+    onError: (error) => console.error(error),
+  });
+
   return activeDiv !== null ? (
     <div className={"h-screen w-full flex flex-col"}>
       {data?.map((chat) => (
@@ -53,35 +62,21 @@ export default function ChatScreen() {
       <div className={"grow flex flex-col p-4 gap-5 overflow-y-scroll"}>
         <Message isFromMe={true} message={"Hello world"} />
         <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={true} message={"Hello world"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
-        <Message isFromMe={false} message={"Hi~"} />
       </div>
 
       <div className={"flex gap-3"}>
-        <input type="text" className={"border-2 p-2 grow"} placeholder={"메세지를 입력하세요."} />
+        <input
+          type="text"
+          className={"border-2 p-2 grow"}
+          placeholder={"메세지를 입력하세요."}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
         {/*@ts-ignore*/}
-        <Button color={"blue-gray"} className={"min-w-[180px]"}>
+        <Button
+          color={"blue-gray"}
+          className={"min-w-[180px]"}
+          onClick={() => sendMessageMutation.mutate({ message: message, chatUserId: activeDiv })}>
           전송하기
         </Button>
       </div>
