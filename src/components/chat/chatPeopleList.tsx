@@ -54,6 +54,7 @@ export default function ChatPeopleList({ loggedInUserId }) {
 
         const presenceTrackStatus = await channel.track({
           // * 위에서 설정한 Presence key 에 대응하는 value 값에 해당.
+          // * Presence_key: { online_at: value }
           online_at: new Date().toISOString(),
         });
         console.log("presenceTrackStatus: ", presenceTrackStatus);
