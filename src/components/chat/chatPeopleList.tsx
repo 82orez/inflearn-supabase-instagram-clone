@@ -12,7 +12,7 @@ import ko from "javascript-time-ago/locale/ko";
 TimeAgo.addDefaultLocale(ko);
 const timeAgo = new TimeAgo("ko-KR");
 
-export default function ChatPeopleList({ loggedInUserId: loggedInUserId }) {
+export default function ChatPeopleList({ loggedInUserId }) {
   const [activeDiv, setActiveDiv] = useRecoilState(activeDivState);
   const handleClick = (index: string) => {
     setActiveDiv(index);

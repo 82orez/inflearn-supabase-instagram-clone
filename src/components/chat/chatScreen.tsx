@@ -15,7 +15,7 @@ import { queryClient } from "@/app/react-query-provider";
 TimeAgo.addLocale(ko);
 const timeAgo = new TimeAgo("ko-KR");
 
-export default function ChatScreen() {
+export default function ChatScreen({ loggedInUserId }) {
   const activeDiv = useRecoilValue(activeDivState);
   const [message, setMessage] = useState("");
 
@@ -53,9 +53,7 @@ export default function ChatScreen() {
       .channel("online_users", {
         config: {
           presence: {
-            // * activeDiv 끝에 ! 을 추가해서 null 값을 가지지 않는다고 강제로 명시.
-            // * 왜냐하면 activeDiv 값이 null 인 경우에는 useQuery 가 실행되지 않게 해놓음.
-            key: activeDiv!,
+            key: loggedInUserId,
           },
         },
       })

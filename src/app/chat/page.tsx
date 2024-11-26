@@ -14,7 +14,7 @@ export default async function ChatPage() {
   return (
     <main className={"border-2 bg-gray-50 flex justify-center items-center w-full"}>
       <ChatPeopleList loggedInUserId={user?.id} />
-      <ChatScreen />
+      <ChatScreen loggedInUserId={user?.id} />
     </main>
   );
 }
