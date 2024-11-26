@@ -48,7 +48,7 @@ export default function ChatScreen({ loggedInUserId }) {
   }, []);
 
   useEffect(() => {
-    // * Presence key
+    // * Presence key 값 설정.
     const channel = supabase
       .channel("online_users", {
         config: {
@@ -62,18 +62,21 @@ export default function ChatScreen({ loggedInUserId }) {
         console.log("newState: ", newState);
       })
       .on("presence", { event: "join" }, ({ key, newPresences }) => {
-        console.log("join", key, newPresences);
+        console.log("join: ", key, newPresences);
       })
       .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
-        console.log("leave", key, leftPresences);
+        console.log("leave: ", key, leftPresences);
       })
       .subscribe(async (status) => {
         if (status !== "SUBSCRIBED") {
           return;
         }
 
-        const presenceTrackStatus = await channel.track({ online_at: new Date().toISOString() });
-        console.log(presenceTrackStatus);
+        const presenceTrackStatus = await channel.track({
+          // * 위에서 설정한 Presence key 에 대응하는 value 값에 해당.
+          online_at: new Date().toISOString(),
+        });
+        console.log("presenceTrackStatus: ", presenceTrackStatus);
       });
 
     return () => {
