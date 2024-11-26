@@ -12,7 +12,7 @@ import { getAllMessages, sendMessage } from "@/server-actions/actions";
 import { useEffect, useState } from "react";
 import { queryClient } from "@/app/react-query-provider";
 
-TimeAgo.addDefaultLocale(ko);
+TimeAgo.addLocale(ko);
 const timeAgo = new TimeAgo("ko-KR");
 
 export default function ChatScreen() {
@@ -21,9 +21,33 @@ export default function ChatScreen() {
 
   const supabase = createClient();
 
-  // useEffect(() => {
-  //   const channel = supabase.channel("messages_gram").on();
-  // }, []);
+  useEffect(() => {
+    // * Postgres Changes
+    const channel = supabase
+      .channel("messages_gram")
+      .on(
+        // 첫번째 인자: 사용할 Realtime 의 종류
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "Message",
+        },
+        (payload) => {
+          // console.log("payload: ", payload);
+          if (payload.errors) {
+            alert("채팅 중 오류 발생!");
+          } else {
+            queryClient.invalidateQueries({ queryKey: ["messages"] });
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, []);
 
   const { data, error } = useQuery({
     queryKey: ["onChatScreen", activeDiv],

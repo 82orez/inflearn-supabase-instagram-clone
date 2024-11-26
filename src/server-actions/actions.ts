@@ -9,13 +9,6 @@ function handleError(error) {
   }
 }
 
-// export const getTodo = async () => {
-//   const supabase = await createClient();
-//   const { data, error } = await supabase.from("Todo").select("*");
-//   handleError(error);
-//   return data;
-// };
-
 // ? message: 내가 보낼 메세지
 // ? chatUserId: 보낼 상대방 id
 export const sendMessage = async ({ message, chatUserId }) => {
