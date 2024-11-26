@@ -2,7 +2,7 @@
 
 import { Button } from "@material-tailwind/react";
 import Message from "@/components/chat/message";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { activeDivState } from "@/app/atoms/activeDivState";
 import { createClient } from "@/utils/supabase/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ const timeAgo = new TimeAgo("ko-KR");
 export default function ChatScreen({ loggedInUserId }) {
   const activeDiv = useRecoilValue(activeDivState);
   const [message, setMessage] = useState("");
-  const [presence, setPresence] = useRecoilState(presenceState);
+  const presence = useRecoilValue(presenceState);
 
   const supabase = createClient();
 
@@ -43,47 +43,6 @@ export default function ChatScreen({ loggedInUserId }) {
         },
       )
       .subscribe();
-
-    return () => {
-      channel.unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    // * Presence key 값 설정.
-    const channel = supabase
-      .channel("online_users", {
-        config: {
-          presence: {
-            key: loggedInUserId,
-          },
-        },
-      })
-      .on("presence", { event: "sync" }, () => {
-        const newState = channel.presenceState();
-        console.log("newState: ", newState);
-        // * 순수 객체로 변환.
-        const newStateObj = JSON.parse(JSON.stringify(newState));
-        setPresence(newStateObj);
-        console.log("newStateObj: ", newStateObj);
-      })
-      .on("presence", { event: "join" }, ({ key, newPresences }) => {
-        console.log("join: ", key, newPresences);
-      })
-      .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
-        console.log("leave: ", key, leftPresences);
-      })
-      .subscribe(async (status) => {
-        if (status !== "SUBSCRIBED") {
-          return;
-        }
-
-        const presenceTrackStatus = await channel.track({
-          // * 위에서 설정한 Presence key 에 대응하는 value 값에 해당.
-          online_at: new Date().toISOString(),
-        });
-        console.log("presenceTrackStatus: ", presenceTrackStatus);
-      });
 
     return () => {
       channel.unsubscribe();
@@ -142,7 +101,8 @@ export default function ChatScreen({ loggedInUserId }) {
           <img src={chat.user_metadata.avatar_url} alt="" className={"p-2 rounded-full w-20 h-20"} />
           <div className={"flex flex-col justify-center"}>
             <div>{chat.user_metadata.user_name}</div>
-            <div>{timeAgo.format(Date.parse(new Date().toISOString()))}</div>
+            {/*@ts-ignore*/}
+            <div>{presence?.[loggedInUserId]?.[0]?.online_at ? timeAgo.format(Date.parse(presence[loggedInUserId][0].online_at)) : ""}</div>
           </div>
         </div>
       ))}
@@ -161,7 +121,7 @@ export default function ChatScreen({ loggedInUserId }) {
         />
         {/*@ts-ignore*/}
         <Button
-          color={"blue-gray"}
+          color={"blue"}
           className={"min-w-[180px]"}
           onClick={() => {
             if (message !== "") sendMessageMutation.mutate({ message: message, chatUserId: activeDiv });
