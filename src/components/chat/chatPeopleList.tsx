@@ -103,7 +103,7 @@ export default function ChatPeopleList({ loggedInUserId }) {
           <div className={"flex flex-col justify-center"}>
             <div>{people.user_metadata.user_name}</div>
             {/*@ts-ignore*/}
-            <div>{presence?.[loggedInUserId]?.[0]?.online_at ? timeAgo.format(Date.parse(presence[loggedInUserId][0].online_at)) : ""}</div>
+            <div>{presence?.[people.id]?.[0]?.online_at ? timeAgo.format(Date.parse(presence[people.id][0].online_at)) : ""}</div>
           </div>
         </div>
       ))}
