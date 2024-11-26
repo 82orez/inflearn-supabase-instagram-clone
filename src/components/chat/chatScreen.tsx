@@ -2,7 +2,7 @@
 
 import { Button } from "@material-tailwind/react";
 import Message from "@/components/chat/message";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { activeDivState } from "@/app/atoms/activeDivState";
 import { createClient } from "@/utils/supabase/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -11,6 +11,7 @@ import ko from "javascript-time-ago/locale/ko";
 import { getAllMessages, sendMessage } from "@/server-actions/actions";
 import { useEffect, useState } from "react";
 import { queryClient } from "@/app/react-query-provider";
+import { presenceState } from "@/app/atoms/presenceState";
 
 TimeAgo.addLocale(ko);
 const timeAgo = new TimeAgo("ko-KR");
@@ -18,6 +19,7 @@ const timeAgo = new TimeAgo("ko-KR");
 export default function ChatScreen({ loggedInUserId }) {
   const activeDiv = useRecoilValue(activeDivState);
   const [message, setMessage] = useState("");
+  const [presence, setPresence] = useRecoilState(presenceState);
 
   const supabase = createClient();
 
@@ -60,6 +62,10 @@ export default function ChatScreen({ loggedInUserId }) {
       .on("presence", { event: "sync" }, () => {
         const newState = channel.presenceState();
         console.log("newState: ", newState);
+        // * 순수 객체로 변환.
+        const newStateObj = JSON.parse(JSON.stringify(newState));
+        setPresence(newStateObj);
+        console.log("newStateObj: ", newStateObj);
       })
       .on("presence", { event: "join" }, ({ key, newPresences }) => {
         console.log("join: ", key, newPresences);
