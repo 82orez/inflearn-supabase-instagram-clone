@@ -22,11 +22,9 @@ export default function ChatScreen() {
   const supabase = createClient();
 
   useEffect(() => {
-    // * Postgres Changes
     const channel = supabase
       .channel("messages_gram")
       .on(
-        // 첫번째 인자: 사용할 Realtime 의 종류
         "postgres_changes",
         {
           event: "INSERT",
@@ -43,6 +41,42 @@ export default function ChatScreen() {
         },
       )
       .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    // * Presence key
+    const channel = supabase
+      .channel("online_users", {
+        config: {
+          presence: {
+            // * activeDiv 끝에 ! 을 추가해서 null 값을 가지지 않는다고 강제로 명시.
+            // * 왜냐하면 activeDiv 값이 null 인 경우에는 useQuery 가 실행되지 않게 해놓음.
+            key: activeDiv!,
+          },
+        },
+      })
+      .on("presence", { event: "sync" }, () => {
+        const newState = channel.presenceState();
+        console.log("newState: ", newState);
+      })
+      .on("presence", { event: "join" }, ({ key, newPresences }) => {
+        console.log("join", key, newPresences);
+      })
+      .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
+        console.log("leave", key, leftPresences);
+      })
+      .subscribe(async (status) => {
+        if (status !== "SUBSCRIBED") {
+          return;
+        }
+
+        const presenceTrackStatus = await channel.track({ online_at: new Date().toISOString() });
+        console.log(presenceTrackStatus);
+      });
 
     return () => {
       channel.unsubscribe();
