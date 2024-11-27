@@ -46,16 +46,16 @@ export default function Signin({ setView }) {
   const signInWithKakao = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "kakao",
-      // options: {
-      //   // redirectTo: process.env.NEXT_PUBLIC_VERCEL_URL
-      //   //   ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/callback`
-      //   //   : "http://localhost:3000/api/auth/callback",
-      //   // redirectTo: "https://instagram-clone.supaneer.com/api/auth/callback",
-      //   // redirectTo: `http://example.com/auth/callback`,
-      // },
+      options: {
+        // redirectTo: process.env.NEXT_PUBLIC_VERCEL_URL
+        //   ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/callback`
+        //   : "http://localhost:3000/api/auth/callback",
+        redirectTo: "https://instagram-clone.supaneer.com/api/auth/callback",
+        // redirectTo: `http://example.com/auth/callback`,
+      },
     });
     if (error) {
-      alert(error.message);
+      console.error("Error Kakao Login:", error);
       return;
     }
     console.log("Kakao sign in success");
