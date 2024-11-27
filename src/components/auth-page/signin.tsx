@@ -57,6 +57,7 @@ export default function Signin({ setView }) {
       return;
     }
     console.log("Kakao sign in success");
+    console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
   };
 
   return (
