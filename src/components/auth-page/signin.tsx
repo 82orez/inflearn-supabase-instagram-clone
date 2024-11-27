@@ -50,7 +50,8 @@ export default function Signin({ setView }) {
         // redirectTo: process.env.NEXT_PUBLIC_VERCEL_URL
         //   ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/callback`
         //   : "http://localhost:3000/api/auth/callback",
-        redirectTo: "https://instagram-clone.supaneer.com/api/auth/callback",
+        // redirectTo: "https://instagram-clone.supaneer.com/api/auth/callback",
+        // redirectTo: `http://example.com/auth/callback`,
       },
     });
     if (error) {
