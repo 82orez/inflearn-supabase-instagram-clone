@@ -5,6 +5,7 @@ import { Button } from "@material-tailwind/react";
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useMutation } from "@tanstack/react-query";
+import { redirect } from "next/navigation";
 
 export default function Signin({ setView }) {
   const [email, setEmail] = useState("");
@@ -46,14 +47,17 @@ export default function Signin({ setView }) {
   const signInWithKakao = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "kakao",
-      // options: {
-      //   // redirectTo: process.env.NEXT_PUBLIC_VERCEL_URL
-      //   //   ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/callback`
-      //   //   : "http://localhost:3000/api/auth/callback",
-      //   redirectTo: "https://instagram-clone.supaneer.com/auth/callback",
-      //   // redirectTo: `http://example.com/auth/callback`,
-      // },
+      options: {
+        // redirectTo: process.env.NEXT_PUBLIC_VERCEL_URL
+        //   ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/auth/callback`
+        //   : "http://localhost:3000/api/auth/callback",
+        redirectTo: "https://instagram-clone.supaneer.com/auth/callback",
+        // redirectTo: `http://example.com/auth/callback`,
+      },
     });
+    if (data.url) {
+      redirect(data.url); // use the redirect API for your server framework
+    }
     if (error) {
       console.error("Error Kakao Login:", error);
       return;
