@@ -17,7 +17,7 @@ export const sendMessage = async ({ message, chatUserId }) => {
   const {
     data: { user }, // 반환되는 user 데이터는 객체 형태.
   } = await supabase.auth.getUser();
-
+  // @ts-ignore
   const { data, error } = await supabase.from("Message").insert({
     message,
     receiver: chatUserId,
